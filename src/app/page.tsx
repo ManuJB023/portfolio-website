@@ -1,103 +1,290 @@
-import Image from "next/image";
+"use client"
 
-export default function Home() {
+import React, { useState } from "react"
+import { motion } from "framer-motion"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
+import { Label } from "@/components/ui/label"
+
+export default function Portfolio() {
+  // ---- Contact form state ----
+  const [name, setName] = useState("")
+  const [email, setEmail] = useState("")
+  const [message, setMessage] = useState("")
+  const [loading, setLoading] = useState(false)
+  const [result, setResult] = useState<null | { ok: boolean; msg: string }>(null)
+
+  // IMPORTANT: set this in .env.local and on Amplify as an env var
+  const apiUrl = process.env.NEXT_PUBLIC_CONTACT_API
+
+  async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault()
+    setResult(null)
+
+    // basic validation
+    if (!name.trim() || !email.trim() || !message.trim()) {
+      setResult({ ok: false, msg: "Please fill out all fields." })
+      return
+    }
+    // super light email check
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setResult({ ok: false, msg: "Please enter a valid email address." })
+      return
+    }
+    if (!apiUrl) {
+      setResult({ ok: false, msg: "Contact API not configured." })
+      return
+    }
+
+    try {
+      setLoading(true)
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      })
+      const data = await res.json().catch(() => ({}))
+
+      if (res.ok) {
+        setResult({ ok: true, msg: "Thanks! Your message has been sent." })
+        setName("")
+        setEmail("")
+        setMessage("")
+      } else {
+        setResult({
+          ok: false,
+          msg: data?.error || "Something went wrong. Please try again.",
+        })
+      }
+    } catch (err) {
+      setResult({ ok: false, msg: "Network error. Please try again." })
+    } finally {
+      setLoading(false)
+    }
+  }
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="min-h-screen bg-gray-50 text-gray-900">
+      {/* Top nav (simple) */}
+      <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur">
+        <nav className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
+          <a href="#home" className="text-2xl font-bold tracking-tight">Manuel Bauka</a>
+          <div className="hidden md:flex gap-6 text-sm">
+            <a href="#services" className="hover:text-blue-600">Services</a>
+            <a href="#portfolio" className="hover:text-blue-600">Portfolio</a>
+            <a href="#blog" className="hover:text-blue-600">Blog</a>
+            <a href="#contact" className="hover:text-blue-600">Contact</a>
+          </div>
+          <Button asChild className="hidden md:inline-flex">
+            <a href="#contact">Hire Me</a>
+          </Button>
+        </nav>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      {/* Hero */}
+      <section id="home" className="max-w-6xl mx-auto px-4 pt-16 pb-20">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="text-center"
+        >
+          <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight leading-tight">
+            AWS DevOps Specialist & Full-Stack Developer
+          </h1>
+          <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+            I help small businesses ship faster with CI/CD, Infrastructure as Code, and scalable web apps on AWS.
+          </p>
+          <div className="mt-8 flex items-center justify-center gap-4">
+            <Button asChild><a href="#services">View Services</a></Button>
+            <Button asChild variant="outline"><a href="#portfolio">See Projects</a></Button>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Services */}
+      <section id="services" className="bg-white py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">Services</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="shadow-sm">
+              <CardHeader><CardTitle>AWS DevOps & CI/CD</CardTitle></CardHeader>
+              <CardContent className="space-y-2 text-gray-700">
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>GitHub Actions pipelines (build, test, deploy)</li>
+                  <li>Infrastructure as Code (Terraform/CDK)</li>
+                  <li>Dockerization & orchestration (ECS/EKS)</li>
+                  <li>Monitoring & alerts (CloudWatch)</li>
+                </ul>
+              </CardContent>
+            </Card>
+            <Card className="shadow-sm">
+              <CardHeader><CardTitle>Full-Stack Web Apps</CardTitle></CardHeader>
+              <CardContent className="space-y-2 text-gray-700">
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>React frontends with Tailwind UI</li>
+                  <li>Node/Express APIs with JWT auth</li>
+                  <li>PostgreSQL or MongoDB</li>
+                  <li>Hosting on AWS (Amplify/ECS/Lambda)</li>
+                </ul>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      </section>
+
+      {/* Portfolio */}
+      <section id="portfolio" className="py-16 bg-gray-50">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">Selected Projects</h2>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Card className="hover:shadow-md transition-shadow">
+              <CardHeader><CardTitle>Blog App with Testing + CI/CD Pipeline</CardTitle></CardHeader>
+              <CardContent className="space-y-3 text-gray-700">
+                <p>A full-stack blog application built with React, AWS CDK, and comprehensive testing + CI/CD pipeline implementation following Test-Driven Development (TDD) and DevOps best practices.</p>
+                <Button asChild variant="outline">
+                  <a href="https://github.com/ManuJB023/blog-app-with-cicd" target="_blank">View on GitHub</a>
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-md transition-shadow">
+              <CardHeader><CardTitle>Serverless API with DynamoDB</CardTitle></CardHeader>
+              <CardContent className="space-y-3 text-gray-700">
+                <p>A production-ready Serverless REST API with AWS Lambda, DynamoDB, and API Gateway. Features CRUD operations, input validation, and automated deployments.</p>
+                <Button asChild variant="outline">
+                  <a href="https://github.com/ManuJB023/my-serverless-api-dynamodb" target="_blank">View on GitHub</a>
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-md transition-shadow">
+              <CardHeader><CardTitle>E-commerce Starter App</CardTitle></CardHeader>
+              <CardContent className="space-y-3 text-gray-700">
+                <p>A production-ready full-stack e-commerce application built with React, Node.js, and deployed on AWS. Features modern UI/UX, secure payment processing, and scalable cloud infrastructure.</p>
+                <Button asChild variant="outline">
+                  <a href="https://github.com/ManuJB023/ecommerce-starter-app" target="_blank">View on GitHub</a>
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-md transition-shadow">
+              <CardHeader><CardTitle>WordPress Terraform AWS Infrastructure</CardTitle></CardHeader>
+              <CardContent className="space-y-3 text-gray-700">
+                <p>Terraform module to deploy scalable WordPress on AWS with RDS, Auto Scaling & ALB.</p>
+                <Button asChild variant="outline">
+                  <a href="https://github.com/ManuJB023/terraform-wordpress-modules" target="_blank">View on GitHub</a>
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-md transition-shadow">
+              <CardHeader><CardTitle>MERN Stack CI/CD Application</CardTitle></CardHeader>
+              <CardContent className="space-y-3 text-gray-700">
+                <p>A full-stack MERN (MongoDB, Express.js, React, Node.js) application with an automated CI/CD pipeline, featuring user authentication, task management, and AWS deployment.</p>
+                <Button asChild variant="outline">
+                  <a href="https://github.com/ManuJB023/mern-cicd-app" target="_blank">View on GitHub</a>
+                </Button>
+              </CardContent>
+            </Card>
+            
+            <Card className="hover:shadow-md transition-shadow">
+              <CardHeader><CardTitle>Inventory Management Dashboard</CardTitle></CardHeader>
+              <CardContent className="space-y-3 text-gray-700">
+                <p>Professional inventory management system built with React, Node.js, and deployed on AWS ECS using Terraform. Features a real-time dashboard, complete CRUD operations, and production-ready infrastructure.</p>
+                <Button asChild variant="outline">
+                  <a href="https://github.com/ManuJB023/inventory-dashboard" target="_blank">View on GitHub</a>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Blog */}
+      <section id="blog" className="bg-white py-16">
+        <div className="max-w-6xl mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-10">Latest Articles</h2>
+          <div className="grid md:grid-cols-2 gap-8">
+            <Card className="hover:shadow-md transition-shadow">
+              <CardHeader><CardTitle>Auto-Deploy React App with GitHub Actions + AWS</CardTitle></CardHeader>
+              <CardContent className="space-y-3 text-gray-700">
+                <p>End-to-end CI/CD: lint → build → test → deploy to S3/CloudFront with cache-busting.</p>
+                <Button asChild variant="outline">
+                  <a href="https://dev.to/YOUR_USERNAME/react-cicd-aws-article" target="_blank">Read on Dev.to</a>
+                </Button>
+              </CardContent>
+            </Card>
+            <Card className="hover:shadow-md transition-shadow">
+              <CardHeader><CardTitle>IaC for Startups: Terraform + AWS in a Weekend</CardTitle></CardHeader>
+              <CardContent className="space-y-3 text-gray-700">
+                <p>Reusable modules for VPC, ECS Fargate, RDS, and CloudWatch alarms — pragmatic patterns.</p>
+                <Button asChild variant="outline">
+                  <a href="https://dev.to/YOUR_USERNAME/terraform-aws-weekend" target="_blank">Read on Dev.to</a>
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
+      </section>
+
+      {/* Contact / Hire Me (functional) */}
+      <section id="contact" className="bg-gray-50 py-16">
+        <div className="max-w-3xl mx-auto px-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">Contact / Hire Me</h2>
+          <p className="text-center text-gray-600 mb-8">Have a project in mind? Send a message and I'll reply quickly.</p>
+          <Card className="shadow-sm">
+            <CardContent className="p-6">
+              <form className="grid gap-4" onSubmit={onSubmit}>
+                <div className="grid gap-2">
+                  <Label htmlFor="name">Name</Label>
+                  <Input id="name" placeholder="Your name" value={name} onChange={(e) => setName(e.target.value)} required />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="email">Email</Label>
+                  <Input id="email" type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} required />
+                </div>
+                <div className="grid gap-2">
+                  <Label htmlFor="message">Message</Label>
+                  <Textarea id="message" placeholder="Tell me about your project…" rows={5} value={message} onChange={(e) => setMessage(e.target.value)} required />
+                </div>
+                <div className="flex items-center gap-3">
+                  <Button type="submit" disabled={loading}>
+                    {loading ? "Sending..." : "Send Message"}
+                  </Button>
+                  <Button asChild type="button" variant="outline">
+                    <a href="mailto:manuelbauka@gmail.com">Or email me</a>
+                  </Button>
+                </div>
+
+                {result && (
+                  <p className={`text-sm ${result.ok ? "text-green-600" : "text-red-600"}`}>
+                    {result.msg}
+                  </p>
+                )}
+                <p className="text-xs text-gray-500">
+                  * Your message will be sent securely via AWS (API Gateway → Lambda → SES).
+                </p>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="border-t">
+        <div className="max-w-6xl mx-auto px-4 py-8 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between gap-3">
+          <p>© {new Date().getFullYear()} Manuel Bauka. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <a href="#services" className="hover:text-blue-600">Services</a>
+            <a href="#portfolio" className="hover:text-blue-600">Portfolio</a>
+            <a href="#blog" className="hover:text-blue-600">Blog</a>
+            <a href="#contact" className="hover:text-blue-600">Contact</a>
+          </div>
+        </div>
       </footer>
-    </div>
-  );
+    </main>
+  )
 }
