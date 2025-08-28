@@ -126,7 +126,7 @@ This is a personal portfolio website, but if you find issues or have suggestions
 AWS DevOps Specialist & Full-Stack Developer
 
 - **Website**: [manuelbauka.dev](https://manuelbauka.dev)
-- **Email**: [manuelbauka@gmail.com](mailto:manuelbauka@gmail.com)
+- **Email**: [mbauka@pm.me](mailto:mbauka@pm.me)
 - **LinkedIn**: [linkedin.com/in/manuelbauka](https://linkedin.com/in/manuelbauka)
 - **GitHub**: [github.com/ManuJB023](https://github.com/ManuJB023)
 

@@ -58,7 +58,8 @@ export default function Portfolio() {
           msg: data?.error || "Something went wrong. Please try again.",
         })
       }
-    } catch (err) {
+    } catch (error) {
+      console.error("Network error:", error)
       setResult({ ok: false, msg: "Network error. Please try again." })
     } finally {
       setLoading(false)
@@ -234,7 +235,7 @@ export default function Portfolio() {
       <section id="contact" className="bg-gray-50 py-16">
         <div className="max-w-3xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">Contact / Hire Me</h2>
-          <p className="text-center text-gray-600 mb-8">Have a project in mind? Send a message and I'll reply quickly.</p>
+          <p className="text-center text-gray-600 mb-8">Have a project in mind? Send a message and I&apos;ll reply quickly.</p>
           <Card className="shadow-sm">
             <CardContent className="p-6">
               <form className="grid gap-4" onSubmit={onSubmit}>
