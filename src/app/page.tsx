@@ -212,7 +212,7 @@ export default function Portfolio() {
             <Card className="hover:shadow-md transition-shadow">
               <CardHeader><CardTitle>Auto-Deploy React App with GitHub Actions + AWS</CardTitle></CardHeader>
               <CardContent className="space-y-3 text-gray-700">
-                <p>End-to-end CI/CD: lint â†' build â†' test â†' deploy to S3/CloudFront with cache-busting.</p>
+                <p>End-to-end CI/CD: lint, build, test, deploy to S3/CloudFront with cache-busting.</p>
                 <Button asChild variant="outline">
                   <a href="https://dev.to/YOUR_USERNAME/react-cicd-aws-article" target="_blank">Read on Dev.to</a>
                 </Button>
@@ -221,7 +221,7 @@ export default function Portfolio() {
             <Card className="hover:shadow-md transition-shadow">
               <CardHeader><CardTitle>IaC for Startups: Terraform + AWS in a Weekend</CardTitle></CardHeader>
               <CardContent className="space-y-3 text-gray-700">
-                <p>Reusable modules for VPC, ECS Fargate, RDS, and CloudWatch alarms â€" pragmatic patterns.</p>
+                <p>Reusable modules for VPC, ECS Fargate, RDS, and CloudWatch alarms - pragmatic patterns.</p>
                 <Button asChild variant="outline">
                   <a href="https://dev.to/YOUR_USERNAME/terraform-aws-weekend" target="_blank">Read on Dev.to</a>
                 </Button>
@@ -235,7 +235,7 @@ export default function Portfolio() {
       <section id="contact" className="bg-gray-50 py-16">
         <div className="max-w-3xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-6">Contact / Hire Me</h2>
-          <p className="text-center text-gray-600 mb-8">Have a project in mind? Send a message and I&apos;ll reply quickly.</p>
+          <p className="text-center text-gray-600 mb-8">Have a project in mind? Send a message and I will reply quickly.</p>
           <Card className="shadow-sm">
             <CardContent className="p-6">
               <form className="grid gap-4" onSubmit={onSubmit}>
@@ -249,7 +249,7 @@ export default function Portfolio() {
                 </div>
                 <div className="grid gap-2">
                   <Label htmlFor="message">Message</Label>
-                  <Textarea id="message" placeholder="Tell me about your projectâ€¦" rows={5} value={message} onChange={(e) => setMessage(e.target.value)} required />
+                  <Textarea id="message" placeholder="Tell me about your project..." rows={5} value={message} onChange={(e) => setMessage(e.target.value)} required />
                 </div>
                 <div className="flex items-center gap-3">
                   <Button type="submit" disabled={loading}>
@@ -266,7 +266,7 @@ export default function Portfolio() {
                   </p>
                 )}
                 <p className="text-xs text-gray-500">
-                  * Your message will be sent securely via AWS (API Gateway â†' Lambda â†' SES).
+                  * Your message will be sent securely via AWS (API Gateway, Lambda, SES).
                 </p>
               </form>
             </CardContent>
@@ -277,7 +277,7 @@ export default function Portfolio() {
       {/* Footer */}
       <footer className="border-t">
         <div className="max-w-6xl mx-auto px-4 py-8 text-sm text-gray-500 flex flex-col md:flex-row items-center justify-between gap-3">
-          <p>Â© {new Date().getFullYear()} Manuel Bauka. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Manuel Bauka. All rights reserved.</p>
           <div className="flex items-center gap-4">
             <a href="#services" className="hover:text-blue-600">Services</a>
             <a href="#portfolio" className="hover:text-blue-600">Portfolio</a>
