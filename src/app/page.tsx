@@ -214,7 +214,7 @@ export default function Portfolio() {
               <CardContent className="space-y-3 text-gray-700">
                 <p>End-to-end CI/CD: lint, build, test, deploy to S3/CloudFront with cache-busting.</p>
                 <Button asChild variant="outline">
-                  <a href="https://dev.to/YOUR_USERNAME/react-cicd-aws-article" target="_blank">Read on Dev.to</a>
+                  <a href="https://dev.to/manujb25/auto-deploy-react-app-with-github-actions-aws-1f59" target="_blank">Read on Dev.to</a>
                 </Button>
               </CardContent>
             </Card>
