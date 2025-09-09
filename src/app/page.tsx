@@ -223,7 +223,7 @@ export default function Portfolio() {
               <CardContent className="space-y-3 text-gray-700">
                 <p>Reusable modules for VPC, ECS Fargate, RDS, and CloudWatch alarms - pragmatic patterns.</p>
                 <Button asChild variant="outline">
-                  <a href="https://dev.to/YOUR_USERNAME/terraform-aws-weekend" target="_blank">Read on Dev.to</a>
+                  <a href="https://dev.to/manujb25/iac-for-startups-terraform-aws-in-a-weekend-2cji" target="_blank">Read on Dev.to</a>
                 </Button>
               </CardContent>
             </Card>
